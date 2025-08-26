@@ -47,16 +47,17 @@ html, body {
 }
 
 /* --- Caja de texto + botones --- */
+/* --- Caja de texto + botones: un poco más ancha --- */
 .card{
   width: 100%;
-  max-width: 350px;          /* MISMO ancho que el logo */
-  padding: 22px;
-  border-radius: 16px;
+  max-width: 420px;          /* igual que el logo para que casen */
+  padding: 26px;             /* un pelín más de aire */
+  border-radius: 18px;
   background: rgba(0,0,0,.22);
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255,255,255,.18);
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  box-shadow: 0 12px 34px rgba(0,0,0,.38);
 }
 
 h1{
