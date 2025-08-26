@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -24,30 +30,40 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-.hero{
-  /* ...lo que tengas... */
+
+/* Hero section */
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;  /* iOS Safari */
+  min-height: 100dvh;  /* navegadores modernos */
+
+  display: grid;
+  place-items: center;
+  padding: 40px 16px;
+
   background:
-    /* antes: .35 y .75 */
     linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,.55)),
     url('/bg.JPG') center / cover no-repeat;
 }
 
-.card{
+/* Logo */
+.logo {
+  width: clamp(300px, 45vw, 520px);
+  display: block;
+  margin: 0 auto 28px;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.45));
+}
+
+/* Card (caja con texto + botones) */
+.card {
   max-width: 480px;
   padding: 22px;
   border-radius: 16px;
-  background: rgba(0,0,0,.22);   /* antes .45 */
+  background: rgba(0,0,0,.22);
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255,255,255,.18);
-  text-align:center;
+  text-align: center;
 }
-.logo{
-  width: clamp(260px, 38vw, 420px); /* crece más en móvil y tablet */
-  display:block;
-  margin: 0 auto 28px;
-  filter: drop-shadow(0 6px 18px rgba(0,0,0,.45)); /* resalta sobre la foto */
-}
-
 
 h1 {
   margin: 0 0 20px;
@@ -56,30 +72,30 @@ h1 {
   color: #fff;
 }
 
-a.btn {
+/* Botones */
+.btn {
   display: block;
-  margin: 10px auto;
-  padding: 12px 16px;
-  border-radius: 10px;
+  width: 100%;
+  margin: 10px 0;
+  padding: 14px;
+  border-radius: 12px;
+  background: white;
+  color: black;
+  font-weight: 600;
   text-decoration: none;
-  color: #000;
-  background: #fff;
+  transition: all 0.3s ease;
 }
 
-a.btn.secondary{
+.btn:hover {
+  background: #eee;
+}
+
+.btn.secondary {
   background: transparent;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,.4);
-}
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1s ease-out forwards;
+  border: 2px solid white;
+  color: white;
 }
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.btn.secondary:hover {
+  background: rgba(255,255,255,.1);
 }
