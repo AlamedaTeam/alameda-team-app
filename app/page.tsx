@@ -11,7 +11,7 @@ export default function Home() {
       {/* CAJA SOLO PARA TEXTO + BOTONES */}
       <div className="card">
         <h1>Club de Trail Running</h1>
-        <a className="btn" href="/login">Entrar</a>
+        <a className="btn" href="/welcome">Entrar</a>
         <a className="btn secondary" href="/profile">Mi perfil</a>
       </div>
     </main>
