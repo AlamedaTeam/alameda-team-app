@@ -24,13 +24,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-.hero {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 40px 16px;
+.hero{
+  /* ...lo que tengas... */
   background:
-    linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.75)),
+    /* antes: .35 y .75 */
+    linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,.55)),
     url('/bg.JPG') center / cover no-repeat;
 }
 
