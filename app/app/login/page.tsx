@@ -1,42 +1,48 @@
 'use client'
-import { useEffect, useState } from 'react'
+
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '../../lib/supabaseClient'
 
-export default function Login() {
+export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-
-  // si ya hay sesión, salta al perfil
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) router.replace('/profile')
-    })
-  }, [router])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    setError(null)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-    setLoading(false)
-    if (error) return setError(error.message)
-    router.push('/profile')
+    if (error) {
+      setError(error.message)
+    } else {
+      router.push('/profile') // cuando entra, lo mandamos al perfil
+    }
   }
 
   return (
     <main className="hero">
       <div className="card">
-        <h1>Iniciar sesión</h1>
-        <form onSubmit={handleLogin} style={{display:'grid', gap:12}}>
-          <input type="email" placeholder="Tu email" value={email} onChange={e=>setEmail(e.target.value)} required />
-          <input type="password" placeholder="Contraseña" value={password} onChange={e=>setPassword(e.target.value)} required />
-          <button className="btn" disabled={loading}>{loading ? 'Entrando…' : 'Entrar'}</button>
+        <h1>Iniciar Sesión</h1>
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Correo"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit" className="btn">Entrar</button>
         </form>
-        {error && <p style={{color:'tomato'}}>{error}</p>}
-        <a className="btn secondary" href="/signup">Crear cuenta</a>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <a className="btn secondary" href="/welcome">Volver</a>
       </div>
     </main>
