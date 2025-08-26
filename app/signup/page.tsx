@@ -1,88 +1,80 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function SignUpPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [pass, setPass]   = useState('');
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
 
-  // Si ya está logueado, salta a /profile
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) router.replace('/profile');
-    });
-  }, [router]);
-
-  const onSubmit = async (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+    setMsg(null);
     setLoading(true);
-
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: `${location.origin}/profile` },
-    });
-
+    const { error } = await supabase.auth.signUp({ email, password: pass });
     setLoading(false);
-
     if (error) {
-      setError(error.message);
-      return;
+      setMsg(error.message);
+    } else {
+      // Si usas confirmación por email, muestra aviso y vuelve al login
+      setMsg('¡Te hemos enviado un correo para confirmar tu cuenta!');
+      setTimeout(() => router.push('/login'), 1200);
     }
-
-    // Si el proyecto tiene "email confirmation" desactivado, ya habrá sesión.
-    // Si está activado, Supabase envía un email. En ambos casos, mandamos a /profile.
-    router.replace('/profile');
   };
 
   return (
     <main className="hero">
       <div className="card">
-        <h1>Crear cuenta</h1>
-        <p style={{ opacity: .85, marginBottom: 12 }}>
+        <h1 style={{marginBottom: 10}}>Crear cuenta</h1>
+        <p style={{opacity:.9, color:'#fff', marginBottom: 18}}>
           Crea tu cuenta para entrar al club.
         </p>
 
-        <form onSubmit={onSubmit}>
-          <input
-            className="input"
-            type="email"
-            placeholder="tu@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoComplete="email"
-          />
-          <input
-            className="input"
-            type="password"
-            placeholder="Contraseña (mín. 6 caracteres)"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-            autoComplete="new-password"
-          />
+        <form onSubmit={handleSignUp}>
+          <div className="field">
+            <label className="label" htmlFor="email">Email</label>
+            <input
+              id="email"
+              className="input"
+              type="email"
+              placeholder="tu@email.com"
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
+              autoComplete="email"
+              required
+            />
+          </div>
 
-          {error && <p className="error">{error}</p>}
+          <div className="field">
+            <label className="label" htmlFor="password">Contraseña</label>
+            <input
+              id="password"
+              className="input"
+              type="password"
+              placeholder="Mín. 6 caracteres"
+              value={pass}
+              onChange={(e)=>setPass(e.target.value)}
+              autoComplete="new-password"
+              required
+              minLength={6}
+            />
+          </div>
 
-          <button className="btn" type="submit" disabled={isLoading}>
-            {isLoading ? 'Creando…' : 'Crear cuenta'}
+          {msg && (
+            <p style={{color:'#fff', margin:'8px 0 4px'}}>{msg}</p>
+          )}
+
+          <button className="btn primary" type="submit" disabled={loading}>
+            {loading ? 'Creando...' : 'Crear cuenta'}
           </button>
         </form>
 
-        <a className="btn secondary" href="/login" style={{ marginTop: 8 }}>
-          Ya tengo cuenta
-        </a>
-        <a className="btn secondary" href="/welcome" style={{ marginTop: 8 }}>
-          Volver
-        </a>
+        <a className="btn secondary" href="/login">Ya tengo cuenta</a>
+        <a className="btn secondary" href="/">Volver</a>
       </div>
     </main>
   );
