@@ -24,3 +24,51 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+.hero {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 40px 16px;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.75)),
+    url('/bg.JPG') center / cover no-repeat;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.45);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  text-align: center;
+}
+
+.logo {
+  width: 160px;
+  display: block;
+  margin: 0 auto 12px auto;
+}
+
+h1 { 
+  margin: 8px 0 16px; 
+  font-size: 28px; 
+  font-weight: 700; 
+  color: #fff;
+}
+
+a.btn {
+  display: block;
+  margin: 10px auto;
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #000;
+  background: #fff;
+}
+
+a.btn.secondary{
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.4);
+}
