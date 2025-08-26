@@ -42,3 +42,26 @@
   font-size: 18px;
   border-radius: 14px;
 }
+/* === Texto claro dentro de la tarjeta === */
+.card h1,
+.card h2,
+.card h3,
+.card p,
+.card small,
+.card .muted,
+.card .helper,
+.card a:not(.btn),
+.card label {
+  color: #fff !important;
+}
+
+/* Botón secundario = borde/ texto blancos sobre fondo transparente */
+.btn.secondary {
+  color: #fff !important;
+  border-color: rgba(255,255,255,.55) !important;
+  background: transparent !important;
+}
+
+/* Placeholders y texto de inputs ya eran blancos, por si acaso: */
+.input { color: #fff !important; }
+.input::placeholder { color: rgba(255,255,255,.8) !important; }
