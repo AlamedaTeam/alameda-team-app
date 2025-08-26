@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <main className="hero">
       <div>
-        <img src="/icon-512.png" alt="Alameda Team" className="logo fade-in" />
+        <img src="/logo.png" alt="Alameda Team" className="logo" />
       </div>
       <div className="card fade-in" style={{ animationDelay: "0.3s" }}>
         <h1>Club de Trail Running</h1>
