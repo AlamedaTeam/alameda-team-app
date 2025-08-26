@@ -32,16 +32,15 @@ body {
     url('/bg.JPG') center / cover no-repeat;
 }
 
-.card {
-  width: 100%;
-  max-width: 420px;
-  padding: 24px;
+.card{
+  max-width: 480px;
+  padding: 22px;
   border-radius: 16px;
-  background: rgba(0,0,0,.45);
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  background: rgba(0,0,0,.22);   /* antes .45 */
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,.18);
+  text-align:center;
 }
-
 .logo{
   width: clamp(260px, 38vw, 420px); /* crece más en móvil y tablet */
   display:block;
