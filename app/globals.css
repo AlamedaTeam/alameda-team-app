@@ -42,10 +42,11 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,.35);
 }
 
-.logo {
-  width: 300px;      /* ahora MUCHO más grande */
-  display: block;
-  margin: 0 auto 24px auto;
+.logo{
+  width: clamp(260px, 38vw, 420px); /* crece más en móvil y tablet */
+  display:block;
+  margin: 0 auto 28px;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.45)); /* resalta sobre la foto */
 }
 
 
