@@ -46,12 +46,13 @@ body {
     url('/bg.JPG') center / cover no-repeat;
 }
 
-/* Logo */
+/* Logo grande del mismo ancho que la caja */
 .logo {
-  width: clamp(300px, 45vw, 520px);
+  width: 80%;               /* ocupa lo mismo que los botones */
+  max-width: 280px;         /* igual que los botones */
+  margin: 0 auto 20px auto; /* centrado */
   display: block;
-  margin: 0 auto 28px;
-  filter: drop-shadow(0 6px 18px rgba(0,0,0,.45));
+  animation: zoomIn 1.2s ease-out;
 }
 
 /* Card (caja con texto + botones) */
