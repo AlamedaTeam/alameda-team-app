@@ -1,12 +1,12 @@
 'use client'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '../../lib/supabaseClient'
 
 export default function Welcome() {
   const router = useRouter()
 
-  // Si ya está logueado, salta directo al perfil
+  // Si ya está logueado, redirige al perfil directamente
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) router.replace('/profile')
@@ -17,7 +17,7 @@ export default function Welcome() {
     <main className="hero">
       <div className="card">
         <h1>Bienvenido al Alameda Team</h1>
-        <p style={{ opacity: .9, marginBottom: 12 }}>
+        <p style={{ opacity: 0.9, marginBottom: 12 }}>
           Salidas, planificaciones semanales, tests y eventos del club.
         </p>
         <a className="btn" href="/signup">Crear cuenta</a>
