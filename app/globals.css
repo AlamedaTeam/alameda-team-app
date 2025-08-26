@@ -48,9 +48,9 @@ body {
 
 /* Logo grande del mismo ancho que la caja */
 .logo {
-  width: 80%;               /* ocupa lo mismo que los botones */
-  max-width: 280px;         /* igual que los botones */
-  margin: 0 auto 20px auto; /* centrado */
+  width: 80%;         /* ocupa el mismo ancho que la caja */
+  max-width: 280px;   /* igual que los botones */
+  margin: 0 auto 20px auto;
   display: block;
   animation: zoomIn 1.2s ease-out;
 }
