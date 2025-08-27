@@ -14,7 +14,7 @@ type Event = {
   rsvp_close_at: string | null
 }
 
-export default function CalendarioPage() {
+export { default } from "../../calendario/page"
   const [events, setEvents] = useState<Event[]>([])
   const [myUserId, setMyUserId] = useState<string | null>(null)
   const [myGoing, setMyGoing] = useState<Record<string, boolean>>({})
