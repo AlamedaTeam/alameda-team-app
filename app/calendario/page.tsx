@@ -163,3 +163,5 @@ export default function CalendarioMix() {
     </div>
   )
 }
+create unique index if not exists rsvp_unique_user_salida
+on public.rsvp (user_id, salida_id);
