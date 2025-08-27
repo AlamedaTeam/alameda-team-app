@@ -1,11 +1,11 @@
 import "./globals.css"
 import Image from "next/image"
 import type { ReactNode } from "react"
-import Logo from "../components/Logo"
+import Logo from "../components/Logo"   // 👈 ahora coge el logo desde /components
 
 export const metadata = {
-  title: 'Alameda Team',
-  description: 'Club de Trail Running',
+  title: "Alameda Team",
+  description: "Club de Trail Running",
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -24,12 +24,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </div>
 
         {/* Oscurecedor suave */}
-        <div className="absolute inset-0 bg-black/25 -z-20" />
+        <div className="absolute inset-0 bg-black/25 -z-10" />
 
-        {/* Logo grande (solo en Home) con z-10 */}
+        {/* Logo (decide tamaño y visibilidad según ruta) */}
         <Logo />
 
-        {/* Contenido SIEMPRE por encima del logo */}
+        {/* Contenido siempre por encima del logo */}
         <main className="relative z-30 flex flex-col items-center justify-center">
           {children}
         </main>
