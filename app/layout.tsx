@@ -14,20 +14,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {/* Fondo a pantalla completa */}
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/bg.jpg"                 // Asegúrate de que /public/bg.jpg existe
+            src="/bg.jpg"
             alt="Montañas Alameda Team"
             fill
             priority
             className="object-cover"
           />
-          {/* Oscurecedor suave para que se lean bien los contenidos */}
           <div className="absolute inset-0 bg-black/30" />
         </div>
 
-        {/* Logo centrado arriba con animación */}
-        <header className="absolute top-16 left-0 right-0 z-10 flex justify-center">
+        {/* Logo más abajo */}
+        <header className="absolute top-28 left-0 right-0 z-10 flex justify-center">
           <Image
-            src="/logo.png"               // Tu logo en /public/logo.png
+            src="/logo.png"
             alt="Alameda Team"
             width={220}
             height={90}
@@ -35,8 +34,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           />
         </header>
 
-        {/* Contenido de cada página */}
-        <main className="relative z-10 flex flex-col items-center">{children}</main>
+        <main className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+          {children}
+        </main>
       </body>
     </html>
   )
