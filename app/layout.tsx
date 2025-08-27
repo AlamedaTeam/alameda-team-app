@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </div>
 
         {/* Logo más abajo */}
-        <header className="absolute top-54 left-0 right-0 z-10 flex justify-center">
+        <header className="absolute top-60 left-0 right-0 z-10 flex justify-center">
           <Image
             src="/logo.png"
             alt="Alameda Team"
@@ -32,12 +32,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             height={90}
             className="drop-shadow-2xl animate-logo"
           />
-        <header className="absolute top-44 left-0 right-0 z-10 flex justify-center">
-  <Image
-    src="/logo.png"
-    alt="Alameda Team"
-    width={440}   // antes 220 → ahora el doble
-    height={180}  // antes 90 → ahora el doble
-    className="drop-shadow-2xl animate-logo"
-  />
-</header>
+        </header>
+
+        <main className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+          {children}
+        </main>
+      </body>
+    </html>
+  )
+}
