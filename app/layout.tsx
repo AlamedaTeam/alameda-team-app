@@ -1,21 +1,61 @@
-import "./globals.css";
-import Image from "next/image";
-import type { Metadata } from "next";
-import HeaderLogo from "./components/HeaderLogo";
+import "./globals.css"
+import Image from "next/image"
+import { ReactNode } from "react"
+import { usePathname } from "next/navigation"
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Alameda Team",
   description: "Club de Trail Running",
-};
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// Logo grande solo en home
+function LogoHome() {
+  const pathname = usePathname()
+  if (pathname !== "/") return null
+
+  return (
+    <header
+      className="
+        pointer-events-none
+        absolute left-0 right-0 top-60
+        z-10 flex justify-center
+      "
+    >
+      <Image
+        src="/logo.png"
+        alt="Alameda Team"
+        width={440}
+        height={180}
+        className="drop-shadow-2xl animate-logo"
+        priority
+      />
+    </header>
+  )
+}
+
+// Logo pequeño fijo en páginas interiores
+function LogoSmall() {
+  const pathname = usePathname()
+  if (pathname === "/") return null
+
+  return (
+    <div className="absolute top-5 left-1/2 -translate-x-1/2 z-40">
+      <Image
+        src="/logo.png"
+        alt="Alameda Team"
+        width={160}
+        height={65}
+        className="drop-shadow-lg"
+        priority
+      />
+    </div>
+  )
+}
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es">
-      <body className="relative min-h-screen text-white">
+      <body className="relative min-h-screen">
         {/* Fondo */}
         <div className="absolute inset-0 -z-10">
           <Image
@@ -28,16 +68,17 @@ export default function RootLayout({
         </div>
 
         {/* Oscurecedor */}
-        <div className="absolute inset-0 bg-black/30 z-0" />
+        <div className="absolute inset-0 bg-black/25 -z-10" />
 
-        {/* Logo (grande en home, pequeño en las demás) */}
-        <HeaderLogo />
+        {/* Logo dinámico */}
+        <LogoHome />
+        <LogoSmall />
 
-        {/* Contenido */}
-        <main className="relative z-20 flex min-h-screen flex-col items-center justify-center px-4">
+        {/* Contenido principal */}
+        <main className="relative z-20 flex flex-col items-center justify-center">
           {children}
         </main>
       </body>
     </html>
-  );
+  )
 }
