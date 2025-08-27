@@ -21,7 +21,9 @@ export default function EventoDetallePage({ params }: PageProps) {
         </p>
 
         <div className="mt-6 text-center">
-          <a href="/calendario" className="underline">Volver al calendario</a>
+          <a href="/calendario" className="underline">
+            Volver al calendario
+          </a>
         </div>
       </div>
     </div>
