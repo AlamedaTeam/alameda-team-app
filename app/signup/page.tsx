@@ -1,81 +1,36 @@
-'use client';
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
-
-export default function SignUpPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [pass, setPass]   = useState('');
-  const [loading, setLoading] = useState(false);
-  const [msg, setMsg] = useState<string | null>(null);
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMsg(null);
-    setLoading(true);
-    const { error } = await supabase.auth.signUp({ email, password: pass });
-    setLoading(false);
-    if (error) {
-      setMsg(error.message);
-    } else {
-      // Si usas confirmación por email, muestra aviso y vuelve al login
-      setMsg('¡Te hemos enviado un correo para confirmar tu cuenta!');
-      setTimeout(() => router.push('/login'), 1200);
-    }
-  };
-
+export default function Signup() {
   return (
-    <main className="hero">
-      <div className="card">
-        <h1 style={{marginBottom: 10}}>Crear cuenta</h1>
-        <p style={{opacity:.9, color:'#fff', marginBottom: 18}}>
-          Crea tu cuenta para entrar al club.
-        </p>
+    <div className="flex flex-col items-center justify-center min-h-screen text-white px-4">
+      <h1 className="text-3xl font-bold text-center mb-6">Crear cuenta</h1>
 
-        <form onSubmit={handleSignUp}>
-          <div className="field">
-            <label className="label" htmlFor="email">Email</label>
-            <input
-              id="email"
-              className="input"
-              type="email"
-              placeholder="tu@email.com"
-              value={email}
-              onChange={(e)=>setEmail(e.target.value)}
-              autoComplete="email"
-              required
-            />
-          </div>
+      <form className="flex flex-col space-y-4 w-full max-w-xs">
+        <input
+          type="email"
+          placeholder="tu@email.com"
+          className="bg-black/50 text-white placeholder-white rounded-xl px-4 py-2 focus:outline-none"
+        />
+        <input
+          type="password"
+          placeholder="Contraseña (mín. 6 caracteres)"
+          className="bg-black/50 text-white placeholder-white rounded-xl px-4 py-2 focus:outline-none"
+        />
 
-          <div className="field">
-            <label className="label" htmlFor="password">Contraseña</label>
-            <input
-              id="password"
-              className="input"
-              type="password"
-              placeholder="Mín. 6 caracteres"
-              value={pass}
-              onChange={(e)=>setPass(e.target.value)}
-              autoComplete="new-password"
-              required
-              minLength={6}
-            />
-          </div>
+        <button
+          type="submit"
+          className="bg-white text-black font-semibold py-2 rounded-xl shadow-md"
+        >
+          Crear cuenta
+        </button>
+      </form>
 
-          {msg && (
-            <p style={{color:'#fff', margin:'8px 0 4px'}}>{msg}</p>
-          )}
-
-          <button className="btn primary" type="submit" disabled={loading}>
-            {loading ? 'Creando...' : 'Crear cuenta'}
-          </button>
-        </form>
-
-        <a className="btn secondary" href="/login">Ya tengo cuenta</a>
-        <a className="btn secondary" href="/">Volver</a>
+      <div className="flex flex-col space-y-3 mt-6 w-full max-w-xs text-center">
+        <a href="/login" className="text-white underline">
+          Ya tengo cuenta
+        </a>
+        <a href="/" className="text-white underline">
+          Volver
+        </a>
       </div>
-    </main>
-  );
+    </div>
+  )
 }
