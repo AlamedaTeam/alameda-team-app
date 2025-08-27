@@ -1,7 +1,7 @@
-import './globals.css'
-import Image from 'next/image'
-import type { ReactNode } from 'react'
-import Logo from '../Logo' // Logo.tsx está en la raíz (../Logo desde /app)
+import "./globals.css"
+import Image from "next/image"
+import type { ReactNode } from "react"
+import Logo from "../components/Logo"
 
 export const metadata = {
   title: 'Alameda Team',
