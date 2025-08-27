@@ -32,13 +32,31 @@ export default function Welcome() {
 
           <Link href="/tienda" className="block">
             <button className="w-full h-12 sm:h-14 rounded-xl border border-white/80 text-white bg-transparent hover:bg-white/10 transition">
-              Tienda de ropa
+              Tienda del Team
             </button>
           </Link>
 
           <Link href="/inscripciones" className="block">
             <button className="w-full h-12 sm:h-14 rounded-xl border border-white/80 text-white bg-transparent hover:bg-white/10 transition">
-              Inscripciones a la carrera
+              Inscripciones a carreras
+            </button>
+          </Link>
+
+          <Link href="/noticias" className="block">
+            <button className="w-full h-12 sm:h-14 rounded-xl border border-white/80 text-white bg-transparent hover:bg-white/10 transition">
+              Noticias / Avisos
+            </button>
+          </Link>
+
+          <Link href="/soporte" className="block">
+            <button className="w-full h-12 sm:h-14 rounded-xl border border-white/80 text-white bg-transparent hover:bg-white/10 transition">
+              Soporte / Contacto
+            </button>
+          </Link>
+
+          <Link href="/faq" className="block">
+            <button className="w-full h-12 sm:h-14 rounded-xl border border-white/80 text-white bg-transparent hover:bg-white/10 transition">
+              FAQ / Cómo unirse
             </button>
           </Link>
 
