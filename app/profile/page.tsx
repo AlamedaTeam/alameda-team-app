@@ -1,145 +1,203 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { supabase } from '@/lib/supabaseClient'
 
-type Profile = {
-  id: string;
-  full_name: string | null;
-  phone: string | null;
-  level: 'iniciación' | 'intermedio' | 'avanzado' | null;
-};
+type Intake = {
+  athlete_id: string
+  height_cm: number | null
+  weight_kg: number | null
+  rhr_bpm: number | null
+  vo2max: number | null
+  zones: Record<string, string> | null
+  last_fitness_test_date: string | null
+  last_race_name: string | null
+  long_run_km: number | null
+  pb_10k_sec: number | null
+  pb_21k_sec: number | null
+  pb_42k_sec: number | null
+  has_gym: boolean | null
+  has_bike: boolean | null
+  has_treadmill: boolean | null
+  has_weights: boolean | null
+  has_bands: boolean | null
+  has_plyo_box: boolean | null
+  goals: string | null
+  updated_at?: string | null
+}
+
+function sToTimeLabel(s?: number | null) {
+  if (!s && s !== 0) return '—'
+  const h = Math.floor(s / 3600)
+  const m = Math.floor((s % 3600) / 60)
+  const sec = s % 60
+  const mm = String(m).padStart(2, '0')
+  const ss = String(sec).padStart(2, '0')
+  return h > 0 ? `${h}:${mm}:${ss}` : `${m}:${ss}`
+}
 
 export default function ProfilePage() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState<string | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [msg, setMsg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true)
+  const [intake, setIntake] = useState<Intake | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    (async () => {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const user = sessionData.session?.user;
-      if (!user) {
-        router.replace('/login');
-        return;
+    const fetchData = async () => {
+      setLoading(true)
+      setError(null)
+
+      const { data: userData, error: userErr } = await supabase.auth.getUser()
+      if (userErr || !userData.user) {
+        setError('Necesitas iniciar sesión.')
+        setLoading(false)
+        return
       }
-      setEmail(user.email ?? null);
 
-      const { data: rows, error } = await supabase
-        .from('profiles')
-        .select('id, full_name, phone, level')
-        .eq('id', user.id)
-        .maybeSingle();
+      const { data, error } = await supabase
+        .from('athlete_intake')
+        .select('*')
+        .eq('athlete_id', userData.user.id)
+        .maybeSingle()
 
-      if (error) console.error(error);
-
-      if (!rows) {
-        // crea fila si no existe
-        const { error: insErr } = await supabase
-          .from('profiles')
-          .insert({ id: user.id, full_name: null, phone: null, level: null });
-        if (insErr) console.error(insErr);
-        setProfile({ id: user.id, full_name: '', phone: '', level: null });
+      if (error) {
+        setError(error.message)
       } else {
-        setProfile(rows as Profile);
+        setIntake(data as Intake | null)
       }
+      setLoading(false)
+    }
 
-      setLoading(false);
-    })();
-  }, [router]);
-
-  const save = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!profile) return;
-    setMsg(null);
-    const { error } = await supabase.from('profiles').upsert(profile);
-    setMsg(error ? `Error: ${error.message}` : 'Guardado ✅');
-  };
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
-    router.replace('/welcome');
-  };
+    fetchData()
+  }, [])
 
   if (loading) {
     return (
-      <div className="w-full max-w-xl mx-auto">
-        <div className="rounded-3xl bg-black/40 backdrop-blur-md border border-white/15 px-6 py-8 text-center">
-          Cargando tu perfil…
-        </div>
+      <div className="min-h-[60vh] flex items-center justify-center text-white">
+        Cargando perfil…
       </div>
-    );
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-white gap-4">
+        <p>Error: {error}</p>
+        <Link href="/login" className="btn">Ir a iniciar sesión</Link>
+      </div>
+    )
+  }
+
+  // Si aún no rellenó el cuestionario, le mandamos al intake
+  if (!intake) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-white gap-4">
+        <p>No encontramos tu cuestionario deportivo.</p>
+        <Link href="/profile/intake" className="btn">Completar cuestionario</Link>
+      </div>
+    )
   }
 
   return (
-    <div className="w-full max-w-xl mx-auto">
-      <div className="rounded-3xl bg-black/40 backdrop-blur-md border border-white/15 shadow-2xl px-6 py-7 md:px-8 md:py-8">
-        <h1 className="text-center text-3xl font-extrabold mb-2">Mi perfil</h1>
-        <p className="text-center text-white/80 mb-6">{email}</p>
-
-        <form onSubmit={save} className="space-y-4">
-          <div>
-            <label className="block text-white/90 mb-1">Nombre completo</label>
-            <input
-              className="w-full rounded-2xl bg-black/30 border border-white/40 text-white px-4 py-3"
-              value={profile?.full_name ?? ''}
-              onChange={(e) =>
-                setProfile((p) => p && { ...p, full_name: e.target.value })
-              }
-              placeholder="Ej: Ana López"
-            />
-          </div>
-
-          <div>
-            <label className="block text-white/90 mb-1">Teléfono</label>
-            <input
-              className="w-full rounded-2xl bg-black/30 border border-white/40 text-white px-4 py-3"
-              value={profile?.phone ?? ''}
-              onChange={(e) =>
-                setProfile((p) => p && { ...p, phone: e.target.value })
-              }
-              placeholder="Ej: 600123123"
-            />
-          </div>
-
-          <div>
-            <label className="block text-white/90 mb-1">Nivel</label>
-            <select
-              className="w-full rounded-2xl bg-black/30 border border-white/40 text-white px-4 py-3"
-              value={profile?.level ?? ''}
-              onChange={(e) =>
-                setProfile((p) => p && { ...p, level: (e.target.value || null) as Profile['level'] })
-              }
-            >
-              <option value="">— Selecciona —</option>
-              <option value="iniciación">Iniciación</option>
-              <option value="intermedio">Intermedio</option</option>
-              <option value="avanzado">Avanzado</option>
-            </select>
-          </div>
-
-          {msg && <p className="text-center text-white/90">{msg}</p>}
-
-          <button
-            type="submit"
-            className="w-full h-12 rounded-xl bg-white text-black font-semibold shadow-md active:scale-[.99] transition"
+    <div className="mx-auto max-w-xl w-full px-4 pb-24">
+      <div className="bg-black/60 backdrop-blur-md rounded-2xl p-5 shadow-lg text-white">
+        <div className="flex items-center justify-between mb-3">
+          <h1 className="text-2xl md:text-3xl font-bold">Mi perfil</h1>
+          <Link
+            href="/profile/intake"
+            className="px-3 py-1.5 rounded-xl bg-white/90 text-black font-semibold hover:bg-white"
           >
-            Guardar
-          </button>
-        </form>
+            Editar
+          </Link>
+        </div>
 
-        <div className="mt-6">
-          <button
-            onClick={signOut}
-            className="w-full h-12 rounded-xl border border-white/80 text-white font-semibold bg-transparent hover:bg-white/10 transition"
+        <p className="text-white/70 text-sm mb-4">
+          Última actualización: {intake.updated_at ? new Date(intake.updated_at).toLocaleString() : '—'}
+        </p>
+
+        {/* Datos físicos */}
+        <section className="space-y-1 mb-5">
+          <h2 className="font-semibold text-lg">Datos físicos</h2>
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <div>Altura: <span className="font-semibold">{intake.height_cm ?? '—'} cm</span></div>
+            <div>Peso: <span className="font-semibold">{intake.weight_kg ?? '—'} kg</span></div>
+            <div>Pulso reposo: <span className="font-semibold">{intake.rhr_bpm ?? '—'} lpm</span></div>
+            <div>VO₂max: <span className="font-semibold">{intake.vo2max ?? '—'}</span></div>
+          </div>
+        </section>
+
+        {/* Zonas */}
+        <section className="space-y-1 mb-5">
+          <h2 className="font-semibold text-lg">Zonas de entrenamiento</h2>
+          {intake.zones ? (
+            <ul className="text-sm list-disc pl-5 space-y-0.5">
+              {Object.entries(intake.zones).map(([k, v]) => (
+                <li key={k}>
+                  <span className="font-semibold">{k.toUpperCase()}</span>: {String(v)}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-white/80">No indicadas.</p>
+          )}
+        </section>
+
+        {/* Historial */}
+        <section className="space-y-1 mb-5">
+          <h2 className="font-semibold text-lg">Historial</h2>
+          <div className="grid grid-cols-1 gap-1 text-sm">
+            <div>Última prueba de acceso: <span className="font-semibold">
+              {intake.last_fitness_test_date ? new Date(intake.last_fitness_test_date).toLocaleDateString() : '—'}
+            </span></div>
+            <div>Última carrera: <span className="font-semibold">{intake.last_race_name ?? '—'}</span></div>
+            <div>Tirada más larga: <span className="font-semibold">{intake.long_run_km ?? '—'} km</span></div>
+          </div>
+        </section>
+
+        {/* Marcas personales */}
+        <section className="space-y-1 mb-5">
+          <h2 className="font-semibold text-lg">Marcas personales</h2>
+          <div className="grid grid-cols-1 gap-1 text-sm">
+            <div>10K: <span className="font-semibold">{sToTimeLabel(intake.pb_10k_sec)}</span></div>
+            <div>21K: <span className="font-semibold">{sToTimeLabel(intake.pb_21k_sec)}</span></div>
+            <div>42K: <span className="font-semibold">{sToTimeLabel(intake.pb_42k_sec)}</span></div>
+          </div>
+        </section>
+
+        {/* Material / recursos */}
+        <section className="space-y-1 mb-5">
+          <h2 className="font-semibold text-lg">Material / recursos</h2>
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <div>Gimnasio: <span className="font-semibold">{intake.has_gym ? 'Sí' : 'No'}</span></div>
+            <div>Bici: <span className="font-semibold">{intake.has_bike ? 'Sí' : 'No'}</span></div>
+            <div>Cinta correr: <span className="font-semibold">{intake.has_treadmill ? 'Sí' : 'No'}</span></div>
+            <div>Pesas: <span className="font-semibold">{intake.has_weights ? 'Sí' : 'No'}</span></div>
+            <div>Gomas: <span className="font-semibold">{intake.has_bands ? 'Sí' : 'No'}</span></div>
+            <div>Cajón pliométrico: <span className="font-semibold">{intake.has_plyo_box ? 'Sí' : 'No'}</span></div>
+          </div>
+        </section>
+
+        {/* Objetivos */}
+        <section className="space-y-1">
+          <h2 className="font-semibold text-lg">Objetivos</h2>
+          <p className="text-sm">{intake.goals || '—'}</p>
+        </section>
+
+        <div className="mt-6 flex gap-3">
+          <Link
+            href="/profile/intake"
+            className="flex-1 text-center px-4 py-2 rounded-xl bg-white/90 text-black font-semibold hover:bg-white"
           >
-            Cerrar sesión
-          </button>
+            Editar cuestionario
+          </Link>
+          <Link
+            href="/welcome"
+            className="flex-1 text-center px-4 py-2 rounded-xl border border-white/40 hover:bg-white/10"
+          >
+            Volver
+          </Link>
         </div>
       </div>
     </div>
-  );
+  )
 }
