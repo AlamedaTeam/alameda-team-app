@@ -1,22 +1,29 @@
+"use client"
+
+import Link from "next/link"
+
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-white px-4">
-      <h1 className="text-3xl font-bold text-center mb-6">
-        Club de Trail Running
-      </h1>
-      <div className="flex flex-col space-y-4 w-full max-w-xs">
-        <a
-          href="/login"
-          className="bg-white text-black font-semibold py-2 px-4 rounded-xl shadow-md text-center"
-        >
-          Entrar
-        </a>
-        <a
-          href="/profile"
-          className="border border-white text-white font-semibold py-2 px-4 rounded-xl shadow-md text-center"
-        >
-          Mi perfil
-        </a>
+    <div className="w-full min-h-screen flex items-end sm:items-center justify-center pb-8 sm:pb-0">
+      {/* Tarjeta de bienvenida: panel oscuro, centrado, con animación */}
+      <div className="animate-card-in w-[92%] sm:w-[560px] rounded-2xl bg-black/45 backdrop-blur-md border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.45)] p-6 sm:p-8">
+        <h1 className="text-white text-3xl sm:text-4xl font-extrabold text-center tracking-tight drop-shadow-lg">
+          Club de Trail Running
+        </h1>
+
+        <div className="mt-5 sm:mt-6 space-y-4">
+          <Link href="/welcome" className="block">
+            <button className="w-full h-12 sm:h-14 rounded-xl bg-white text-black font-semibold shadow-md transition active:scale-[.99]">
+              Entrar
+            </button>
+          </Link>
+
+          <Link href="/profile" className="block">
+            <button className="w-full h-12 sm:h-14 rounded-xl border border-white/80 text-white font-semibold bg-transparent hover:bg-white/10 transition">
+              Mi perfil
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   )
