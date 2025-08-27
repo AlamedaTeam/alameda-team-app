@@ -19,6 +19,7 @@ export default function CalendarioPage() {
   const [myUserId, setMyUserId] = useState<string | null>(null)
   const [myGoing, setMyGoing] = useState<Record<string, boolean>>({})
   const [loadingIds, setLoadingIds] = useState<Record<string, boolean>>({})
+  const [ensuring, setEnsuring] = useState(true)
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -26,16 +27,29 @@ export default function CalendarioPage() {
     })
   }, [])
 
-  useEffect(() => {
+  const fetchEvents = async () => {
     const ymd = new Date().toISOString().slice(0, 10)
-    supabase
+    const { data } = await supabase
       .from('events')
       .select('id,title,event_date,place,url,rsvp_open_at,rsvp_close_at')
       .gte('event_date', ymd)
       .order('event_date', { ascending: true })
-      .then(({ data }) => setEvents((data ?? []) as Event[]))
+    setEvents((data ?? []) as Event[])
+  }
+
+  // 1) Asegura que existan los eventos del finde y luego carga la lista
+  useEffect(() => {
+    (async () => {
+      try {
+        await supabase.rpc('ensure_weekend_events')
+      } finally {
+        await fetchEvents()
+        setEnsuring(false)
+      }
+    })()
   }, [])
 
+  // 2) Marca mis asistencias
   useEffect(() => {
     if (!myUserId || events.length === 0) return
     const ids = events.map(e => e.id)
@@ -70,7 +84,7 @@ export default function CalendarioPage() {
   }
 
   function estadoVentana(e: Event) {
-    const now = new Date().getTime()
+    const now = Date.now()
     const open = e.rsvp_open_at ? new Date(e.rsvp_open_at).getTime() : 0
     const close = e.rsvp_close_at ? new Date(e.rsvp_close_at).getTime() : 0
     if (now < open) return { abierto: false, msg: 'Abre el lunes 00:00' }
@@ -95,23 +109,35 @@ export default function CalendarioPage() {
           Inscripciones: <b>lunes 00:00 → viernes 23:00</b> (hora de Madrid).
         </p>
 
-        {events.length === 0 && <p className="text-center text-white/70">No hay eventos próximos.</p>}
+        {ensuring && <p className="text-center text-white/70">Preparando eventos…</p>}
+
+        {!ensuring && events.length === 0 && (
+          <p className="text-center text-white/70">No hay eventos próximos.</p>
+        )}
 
         <ul className="space-y-4">
           {events.map(ev => {
             const fecha = new Date(ev.event_date + 'T00:00:00')
-            const fechaStr = fecha.toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long' })
+            const fechaStr = fecha.toLocaleDateString('es-ES', {
+              weekday: 'long',
+              day: '2-digit',
+              month: 'long'
+            })
             const ventana = estadoVentana(ev)
 
             return (
               <li key={ev.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <h3 className="font-semibold text-lg">{ev.title}</h3>
+                    <h3 className="font-semibold text-lg capitalize">{ev.title}</h3>
                     <p className="text-white/80 text-sm">{fechaStr}{ev.place ? ` · ${ev.place}` : ''}</p>
-                    <p className={`text-xs mt-1 ${ventana.abierto ? 'text-green-300' : 'text-white/60'}`}>{ventana.msg}</p>
+                    <p className={`text-xs mt-1 ${ventana.abierto ? 'text-green-300' : 'text-white/60'}`}>
+                      {ventana.msg}
+                    </p>
                     {ev.url && (
-                      <Link href={ev.url} target="_blank" className="text-white/90 underline text-sm">Detalle en la web</Link>
+                      <Link href={ev.url} target="_blank" className="text-white/90 underline text-sm">
+                        Detalle en la web
+                      </Link>
                     )}
                   </div>
 
@@ -133,10 +159,6 @@ export default function CalendarioPage() {
             )
           })}
         </ul>
-
-        <div className="mt-6 text-center text-sm text-white/70">
-          Los eventos se generan cada lunes. Si falta alguno, dímelo.
-        </div>
       </div>
     </div>
   )
