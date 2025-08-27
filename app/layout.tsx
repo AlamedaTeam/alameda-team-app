@@ -4,7 +4,7 @@ import type { ReactNode } from "react"
 
 export const metadata = {
   title: "Alameda Team",
-  description: "Club de Trail Running",
+  description: "Club Trail Running",
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </div>
 
         {/* Logo más abajo */}
-        <header className="absolute top-28 left-0 right-0 z-10 flex justify-center">
+        <header className="absolute top-64 left-0 right-0 z-10 flex justify-center">
           <Image
             src="/logo.png"
             alt="Alameda Team"
