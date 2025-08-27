@@ -1,7 +1,7 @@
 import './globals.css'
 import Image from 'next/image'
 import type { ReactNode } from 'react'
-import Logo from '../Logo'   // usa esta import porque tu Logo.tsx está en la raíz
+import Logo from '../Logo' // Logo.tsx está en la raíz (../Logo desde /app)
 
 export const metadata = {
   title: 'Alameda Team',
@@ -12,8 +12,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es">
       <body className="relative min-h-screen">
-        {/* Fondo a pantalla completa */}
-        <div className="absolute inset-0 -z-10">
+        {/* Fondo */}
+        <div className="absolute inset-0 -z-20">
           <Image
             src="/bg.JPG"
             alt="Montañas Alameda Team"
@@ -24,13 +24,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </div>
 
         {/* Oscurecedor suave */}
-        <div className="absolute inset-0 bg-black/25 -z-10" />
+        <div className="absolute inset-0 bg-black/25 -z-20" />
 
-        {/* Logo grande: solo en Home */}
+        {/* Logo grande (solo en Home) con z-10 */}
         <Logo />
 
-        {/* Contenido de cada página */}
-        <main className="relative z-10 flex flex-col items-center justify-center">
+        {/* Contenido SIEMPRE por encima del logo */}
+        <main className="relative z-30 flex flex-col items-center justify-center">
           {children}
         </main>
       </body>
