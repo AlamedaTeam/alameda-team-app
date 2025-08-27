@@ -5,24 +5,19 @@ import { usePathname } from 'next/navigation'
 
 export default function Logo() {
   const pathname = usePathname()
-  const isHome = pathname === '/'
-
-  // Solo mostramos el logo grande en la Home
-  if (!isHome) return null
+  const isHome = pathname === '/' // solo en la home el logo grande
 
   return (
     <div
-      className="
-        pointer-events-none   /* NO intercepta clics */
-        absolute top-[10vh] left-1/2 -translate-x-1/2
-        z-10                   /* por debajo del contenido */
-      "
+      className={`pointer-events-none flex justify-center items-center ${
+        isHome ? 'absolute top-20 left-0 right-0 z-20' : 'absolute top-4 left-4 z-20'
+      }`}
     >
       <Image
         src="/logo.png"
         alt="Alameda Team"
-        width={600}
-        height={600}
+        width={isHome ? 440 : 120}   // grande en home, pequeño en resto
+        height={isHome ? 180 : 50}
         className="drop-shadow-2xl"
         priority
       />
