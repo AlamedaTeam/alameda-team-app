@@ -1,41 +1,37 @@
-import "./globals.css"
-import Image from "next/image"
+import './globals.css'
+import type { Metadata } from 'next'
+import Image from 'next/image'
+import React from 'react'
+import Logo from './components/Logo'
 
-export const metadata = {
-  title: "Alameda Team",
-  description: "Club de Trail Running",
+export const metadata: Metadata = {
+  title: 'Alameda Team',
+  description: 'Club de Trail Running',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body className="relative min-h-screen">
+      <body className="relative min-h-screen text-white">
         {/* Fondo a pantalla completa */}
-        <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 -z-20">
           <Image
-            src="/bg.JPG"
+            src="/bg.JPG"                  // ojo: mayúsculas/minúsculas deben coincidir
             alt="Montañas Alameda Team"
             fill
             priority
             className="object-cover"
           />
-          {/* Oscurecedor suave para que se lea bien el contenido */}
-          <div className="absolute inset-0 bg-black/25" />
         </div>
 
-        {/* Logo centrado más grande */}
-        <header className="absolute top-60 left-0 right-0 z-10 flex justify-center">
-          <Image
-            src="/logo.png"
-            alt="Alameda Team"
-            width={440}   // Doble de ancho
-            height={180}  // Doble de alto
-            className="drop-shadow-2xl animate-logo"
-          />
-        </header>
+        {/* Oscurecedor para legibilidad */}
+        <div className="absolute inset-0 -z-10 bg-black/25" />
 
-        {/* Contenido de cada página */}
-        <main className="flex flex-col items-center justify-center min-h-screen text-white px-4">
+        {/* Logo (grande en home, más pequeño en el resto) */}
+        <Logo />
+
+        {/* Contenido de cada página (siempre por encima del logo) */}
+        <main className="relative z-30 flex min-h-screen flex-col items-center justify-center px-4">
           {children}
         </main>
       </body>
