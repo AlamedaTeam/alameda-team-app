@@ -1,25 +1,24 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
-export default function HeaderLogo() {
-  const pathname = usePathname();
-  const isHome = pathname === '/';
+export default function Logo() {
+  const pathname = usePathname()
+  const isHome = pathname === '/'
+
+  if (!isHome) return null // 🔥 no mostramos logo en páginas internas
 
   return (
-    <header
-      className={`pointer-events-none absolute flex justify-center w-full 
-        ${isHome ? 'top-28 z-10' : 'top-6 left-4 z-20 justify-start'}`}
-    >
+    <div className="pointer-events-none absolute top-[10vh] left-1/2 -translate-x-1/2 z-10">
       <Image
         src="/logo.png"
         alt="Alameda Team"
-        width={isHome ? 600 : 160}   // grande en home, pequeño en otras
-        height={isHome ? 260 : 70}
+        width={600}
+        height={600}
+        className="drop-shadow-2xl"
         priority
-        className={`${isHome ? 'drop-shadow-2xl animate-logo' : 'drop-shadow-md'}`}
       />
-    </header>
-  );
+    </div>
+  )
 }
