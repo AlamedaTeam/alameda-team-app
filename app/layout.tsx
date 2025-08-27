@@ -1,7 +1,7 @@
 import './globals.css'
 import Image from 'next/image'
 import type { ReactNode } from 'react'
-import TopLogos from './TopLogos'
+import Logo from '../Logo'   // usa esta import porque tu Logo.tsx está en la raíz
 
 export const metadata = {
   title: 'Alameda Team',
@@ -23,14 +23,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           />
         </div>
 
-        {/* Oscurecedor suave para legibilidad */}
+        {/* Oscurecedor suave */}
         <div className="absolute inset-0 bg-black/25 -z-10" />
 
-        {/* Logos (home grande / interior pequeño) */}
-        <TopLogos />
+        {/* Logo grande: solo en Home */}
+        <Logo />
 
-        {/* Contenido: siempre por encima del fondo, por debajo del logo (logo no hace clics) */}
-        <main className="relative z-20 flex flex-col items-center justify-center">
+        {/* Contenido de cada página */}
+        <main className="relative z-10 flex flex-col items-center justify-center">
           {children}
         </main>
       </body>
