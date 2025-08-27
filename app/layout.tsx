@@ -13,20 +13,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Fondo a pantalla completa */}
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/bg.JPG" // OJO: respeta mayúsculas/minúsculas del archivo
+            src="/bg.JPG"
             alt="Montañas Alameda Team"
             fill
             priority
             className="object-cover"
           />
           {/* Oscurecedor suave para que se lea bien el contenido */}
-          <div className="absolute inset-0 bg-black/25" />
+          <div className="absolute inset-0 bg-black/40" />
         </div>
 
-        {/* Logo centrado arriba */}
-        <header className="w-full flex justify-center pt-10">
+        {/* Logo animado */}
+        <header className="w-full flex justify-center pt-10 animate-fadeInScale">
           <Image
-            src="/logo.png"   // <- Aquí va tu logo real
+            src="/logo.png"
             alt="Alameda Team"
             width={220}
             height={90}
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
 
         {/* Contenido de cada página */}
-        <main className="flex flex-col items-center justify-center">
+        <main className="flex flex-col items-center justify-center space-y-4">
           {children}
         </main>
       </body>
