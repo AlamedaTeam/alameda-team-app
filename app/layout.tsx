@@ -1,41 +1,45 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import './globals.css'
+import "./globals.css"
+import Image from "next/image"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
+export const metadata = {
   title: "Alameda Team",
-  description: "App oficial del Alameda Trail Team",
-};
+  description: "Club de Trail Running",
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#0b0b0b" />
-        <link rel="apple-touch-icon" href="/icon-192.png" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className="relative min-h-screen">
+        {/* Fondo a pantalla completa */}
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src="/bg.JPG"               // OJO: respeta mayúsculas/minúsculas
+            alt="Montañas Alameda Team"
+            fill
+            priority
+            className="object-cover"
+          />
+          {/* oscurecedor suave para que se lea bien el contenido */}
+          <div className="absolute inset-0 bg-black/25" />
+        </div>
+
+        {/* Logo centrado arriba */}
+        <header className="w-full flex justify-center pt-10">
+          {/* Si no tienes el logo todavía, puedes comentar este bloque */}
+          <Image
+            src="/logo.png"
+            alt="Alameda Team"
+            width={220}
+            height={90}
+            className="drop-shadow-lg"
+          />
+        </header>
+
+        {/* Contenido de cada página */}
+        <main className="flex flex-col items-center justify-center">
+          {children}
+        </main>
       </body>
     </html>
-  );
+  )
 }
