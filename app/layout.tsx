@@ -13,21 +13,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Fondo a pantalla completa */}
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/bg.JPG"                 // ¡OJO! respeta mayúsculas/minúsculas
+            src="/bg.JPG" // OJO: respeta mayúsculas/minúsculas del archivo
             alt="Montañas Alameda Team"
             fill
             priority
             className="object-cover"
           />
+          {/* Oscurecedor suave para que se lea bien el contenido */}
+          <div className="absolute inset-0 bg-black/25" />
         </div>
-
-        {/* Oscurecedor suave para que se lea bien el contenido */}
-        <div className="absolute inset-0 bg-black/25" />
 
         {/* Logo centrado arriba */}
         <header className="w-full flex justify-center pt-10">
           <Image
-            src="/file.svg"               // <- usamos un asset que SÍ existe en /public
+            src="/logo.png"   // <- Aquí va tu logo real
             alt="Alameda Team"
             width={220}
             height={90}
