@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import Link from 'next/link'
 
@@ -81,6 +81,15 @@ export default function CalendarioPage() {
   return (
     <div className="relative z-20 w-full max-w-xl mx-auto px-4">
       <div className="rounded-3xl bg-black/45 backdrop-blur-md border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.45)] p-6 sm:p-8">
+        {/* ENLACE A LA WEB DEL TEAM */}
+        <a
+          href="https://www.alamedatrailteam.com/salidas-trail-running-montana-entrenamientos-alcala-de-henares/"
+          target="_blank"
+          className="block w-full h-12 rounded-xl bg-white text-black font-semibold text-center leading-[3rem] mb-4"
+        >
+          Ver calendario en la web
+        </a>
+
         <h1 className="text-center text-3xl sm:text-4xl font-extrabold mb-2">Calendario del Team</h1>
         <p className="text-center text-white/85 mb-6">
           Próximas salidas y eventos. Marca <b>Asistir</b> y te apuntamos.
