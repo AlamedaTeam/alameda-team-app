@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import ProfileProgress from '@/app/components/ProfileProgress'   // ⬅️ Import añadido
+import ProfileProgress from '@/app/components/ProfileProgress'
 
 export default function Welcome() {
   return (
@@ -13,9 +13,17 @@ export default function Welcome() {
           Elige a dónde quieres ir:
         </p>
 
-        {/* Tarjeta de progreso del perfil */}
+        {/* Tarjeta de progreso del perfil con botón directo */}
         <div className="mb-6">
           <ProfileProgress />
+          <div className="mt-3 text-center">
+            <Link
+              href="/profile/intake"
+              className="inline-block px-4 py-2 rounded-xl bg-white text-black font-semibold hover:bg-white/90"
+            >
+              Completar / Editar perfil
+            </Link>
+          </div>
         </div>
 
         {/* Botones de navegación */}
