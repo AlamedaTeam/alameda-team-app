@@ -27,3 +27,4 @@ export default function Home() {
     </div>
   )
 }
+import BtnWhatsapp from '../components/BtnWhatsapp'
