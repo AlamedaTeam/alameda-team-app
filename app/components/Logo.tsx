@@ -5,19 +5,20 @@ import { usePathname } from 'next/navigation';
 
 export default function HeaderLogo() {
   const pathname = usePathname();
-
-  // Solo mostrar el logo en la portada "/"
-  if (pathname !== '/') return null;
+  const isHome = pathname === '/';
 
   return (
-    <header className="pointer-events-none absolute top-28 left-0 right-0 z-10 flex justify-center">
+    <header
+      className={`pointer-events-none absolute flex justify-center w-full 
+        ${isHome ? 'top-28 z-10' : 'top-6 left-4 z-20 justify-start'}`}
+    >
       <Image
         src="/logo.png"
         alt="Alameda Team"
-        width={600}   // tamaño grande
-        height={260}
+        width={isHome ? 600 : 160}   // grande en home, pequeño en otras
+        height={isHome ? 260 : 70}
         priority
-        className="drop-shadow-2xl animate-logo"
+        className={`${isHome ? 'drop-shadow-2xl animate-logo' : 'drop-shadow-md'}`}
       />
     </header>
   );
