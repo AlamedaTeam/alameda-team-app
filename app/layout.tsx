@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="relative min-h-screen text-white">
-        {/* Fondo a pantalla completa (capa más baja) */}
+        {/* Fondo */}
         <div className="absolute inset-0 -z-10">
           <Image
             src="/bg.JPG"
@@ -27,13 +27,13 @@ export default function RootLayout({
           />
         </div>
 
-        {/* Velo suave para mejorar contraste (debajo del logo y contenido) */}
+        {/* Oscurecedor */}
         <div className="absolute inset-0 bg-black/30 z-0" />
 
-        {/* Logo (solo en "/"), no bloquea toques y va debajo del contenido */}
+        {/* Logo (grande en home, pequeño en las demás) */}
         <HeaderLogo />
 
-        {/* Contenido de cada página: SIEMPRE por encima del logo */}
+        {/* Contenido */}
         <main className="relative z-20 flex min-h-screen flex-col items-center justify-center px-4">
           {children}
         </main>
