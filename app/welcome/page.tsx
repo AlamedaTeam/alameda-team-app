@@ -1,16 +1,24 @@
 'use client'
 
 import Link from 'next/link'
+import ProfileProgress from '@/app/components/ProfileProgress'   // ⬅️ Import añadido
 
 export default function Welcome() {
   return (
     <div className="relative z-20 w-full max-w-xl mx-auto px-4">
       <div className="rounded-3xl bg-black/45 backdrop-blur-md border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.45)] p-6 sm:p-8">
+        
         <h1 className="text-center text-3xl sm:text-4xl font-extrabold mb-2">¡Bienvenido!</h1>
         <p className="text-center text-white/85 mb-6">
           Elige a dónde quieres ir:
         </p>
 
+        {/* Tarjeta de progreso del perfil */}
+        <div className="mb-6">
+          <ProfileProgress />
+        </div>
+
+        {/* Botones de navegación */}
         <div className="grid grid-cols-1 gap-4">
           <Link href="/profile" className="block">
             <button className="w-full h-12 sm:h-14 rounded-xl bg-white text-black font-semibold shadow-md active:scale-[.99] transition">
