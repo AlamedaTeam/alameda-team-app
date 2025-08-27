@@ -1,0 +1,8 @@
+'use client'
+import OneSignal from 'react-onesignal'
+
+export async function initOneSignal() {
+  const appId = process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID
+  if (!appId) return
+  await OneSignal.init({ appId, allowLocalhostAsSecureOrigin: true })
+}
