@@ -82,3 +82,9 @@ export default async function EventAttendeesPage({ params }: Params) {
     </div>
   )
 }
+<Link
+  href={`/calendario/${event.id}`}
+  className="text-white/90 underline text-sm mt-2 inline-block"
+>
+  Ver asistentes
+</Link>
