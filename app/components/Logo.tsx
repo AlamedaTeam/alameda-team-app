@@ -7,10 +7,10 @@ export default function Logo() {
   const pathname = usePathname()
   const isHome = pathname === '/'
 
-  if (!isHome) return null // 🔥 no mostramos logo en páginas internas
+  if (!isHome) return null
 
   return (
-    <div className="pointer-events-none absolute top-[10vh] left-1/2 -translate-x-1/2 z-10">
+    <div className="pointer-events-none absolute top-[10vh] left-1/2 -translate-x-1/2 z-20">
       <Image
         src="/logo.png"
         alt="Alameda Team"
