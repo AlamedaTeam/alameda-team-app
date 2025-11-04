@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     });
 
     const data = await response.json();
-    console.log("✅ Strava conectado:", data);
+    console.log("✅ Strava conectado correctamente:", data);
 
     return NextResponse.json({
       message: "Conexión Strava OK",
@@ -31,6 +31,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error("❌ Error OAuth Strava:", error);
-    return NextResponse.json({ error: "Error al conectar Strava." }, { status: 500 });
+    return NextResponse.json({ error: "Error al conectar con Strava." }, { status: 500 });
   }
 }
